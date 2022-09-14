@@ -52,14 +52,15 @@ public class Map extends AppCompatActivity {
             GeoPoint gpsLokacije = new GeoPoint(lokacije.getLatitude(),lokacije.getLongitude());
             Marker marker = new Marker(map);
             marker.setPosition(gpsLokacije);
+            marker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
+            map.getOverlays().add(marker);
             marker.setOnMarkerClickListener((Marker,MapView) ->{
                 //marker.showInfoWindow();
                 MapView.getController().animateTo(marker.getPosition());
                 Toast.makeText(ctx, "Latitude: " + lokacije.getLatitude() +"\n Longtitude: " +lokacije.getLongitude() , Toast.LENGTH_LONG).show();
                 return  true;
             });
-            marker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-            map.getOverlays().add(marker);
+
             posljednjaLokacija = gpsLokacije;
         }
 
