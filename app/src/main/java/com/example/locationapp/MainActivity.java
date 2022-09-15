@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -26,9 +27,12 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
-
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -95,8 +99,16 @@ public class MainActivity extends AppCompatActivity {
                 Gps gps = (Gps) getApplicationContext();
                 savedLocations = gps.getLokacije();
                 savedLocations.add(currentLocation);
+                SharedPreferences sharedPreferences = getSharedPreferences("shared preferences",MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                Gson gson = new Gson();
+                String json = gson.toJson(savedLocations);
+                editor.putString("locations",json);
+                editor.commit();
+                //editor.apply();
             }
         });
+
 
         btn_locationList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,6 +212,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
     private void   updateUIValues(Location location) {
         tv_lat.setText(String.valueOf(location.getLatitude()));
